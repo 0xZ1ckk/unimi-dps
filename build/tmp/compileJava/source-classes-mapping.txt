@@ -1,4 +1,8 @@
-TCPServer.java
- TCPServer
-TCPClient.java
- TCPClient
+Animal.java
+ Animal
+MyThread.java
+ MyThread
+Main.java
+ Main
+Veterinarian.java
+ Veterinarian

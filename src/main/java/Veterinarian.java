@@ -9,67 +9,36 @@ public class Veterinarian {
     public int catsWaiting = 0;
     public int dogsWaiting = 0;
 
-    public synchronized void enterRoom(Animal animal) throws Exception {
-        if (animal.getType().equals(("cat"))) {
-            catsCounter++;
-        } else if (animal.getType().equals("dog")) {
-            dogsCounter++;
+    public synchronized void addAnimal(String catOrDog) throws Exception {
+        if (catOrDog.equals("C")) {
+            while (this.catsCounter != 0 || this.dogsCounter != 0) {
+                this.catsWaiting++;
+                System.out.println("\nCat is now waiting");
+                wait();
+                this.catsWaiting--;
+            }
+            this.catsCounter++;
+            System.out.println("\nCat has entered the room");
+        } else if (catOrDog.equals("D")) {
+            while (this.catsCounter != 0 || this.dogsCounter > 3) {
+                this.dogsWaiting++;
+                System.out.println("\nDog is now waiting");
+                wait();
+                this.dogsWaiting--;
+            }
+            this.dogsCounter++;
+            System.out.println("\nDog has entered the room");
         }
     }
 
-    public synchronized void exitRoom(Animal animal) throws Exception {
-        if (animal.getType().equals(("cat"))) {
+    public synchronized void removeAnimal(String catOrDog) throws Exception {
+        if (catOrDog.equals("C")) {
             catsCounter--;
-        } else if (animal.getType().equals("dog")) {
+            System.out.println("A cat has been removed");
+        } else if (catOrDog.equals("D")) {
             dogsCounter--;
+            System.out.println("A dog has been removed");
         }
-    }
-
-    public void addAnimal(BufferedReader userInput) throws Exception {
-        System.out.print("Do you wanna add a cat or a dog? C/D : ");
-        String catOrDog = userInput.readLine();
-
-        if (catOrDog.equals("cat")) {
-            if (catsCounter != 0 || dogsCounter != 0) {
-                wait();
-                catsWaiting++;
-            } else {
-                enterRoom(new Animal(catOrDog));
-                catsCounter++;
-            }
-        } else if (catOrDog.equals("dog")) {
-            if (catsCounter != 0 || dogsCounter > 3) {
-                wait();
-                dogsWaiting++;
-            }
-        } else {
-            enterRoom(new Animal(catOrDog));
-            dogsCounter++;
-        }
-    }
-
-
-    public void removeAnimal(BufferedReader userInput) throws Exception {
-        System.out.print("Do you wanna remove a cat or a dog? C/D : ");
-        String catOrDog = userInput.readLine();
-
-        if (catOrDog.equals("cat")) {
-            if (catsCounter > 0) {
-                catsCounter--;
-                notify();
-            } else {
-                System.out.println("There's no cats!");
-            }
-        } else if (catOrDog.equals("dog")) {
-            if (dogsCounter > 0) {
-                dogsWaiting--;
-                notify();
-            } else {
-                System.out.print("There's no dogs!");
-            }
-        } else {
-            enterRoom(new Animal(catOrDog));
-            dogsCounter++;
-        }
+        notify();
     }
 }

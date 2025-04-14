@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 
 public class Animal {
     private String type;
@@ -9,10 +8,6 @@ public class Animal {
 
     public Animal(String type){
         this.type = type;
-    }
-
-    public void enterRoom(Veterinarian veterinarian, Animal animal) throws Exception{
-        veterinarian.enterRoom(animal);
     }
 
 }
